@@ -1,0 +1,107 @@
+dataset:
+  repo_id: "IGRIS_C"
+  root: "datasets"
+  fps: 30
+  use_videos: true
+  private: true
+  task_name: "Pick and Place"
+  tasks:
+    - "Pick and Place"
+  num_image_writer_processes: 5
+  num_image_writer_threads: 10
+  perf_log_enabled: true
+  perf_log_dir: "logs/collect_data"
+  perf_log_every_n_frames: 10
+  perf_log_slow_frame_ms: 40.0
+
+features:
+  - key: "observation.image.realsense_head"
+    use: true
+    dtype: "video"      # lerobot dtype category
+    np_dtype: "uint8"   # numpy cast dtype
+    shape: [480, 640, 3]
+    names: ["height", "width", "channel"]
+    shm:
+      name: "camera_shm"
+      field: "realsense_head"
+
+  - key: "observation.image.realsense_wrist_left"
+    use: true
+    dtype: "video"
+    np_dtype: "uint8"
+    shape: [480, 640, 3]
+    names: ["height", "width", "channel"]
+    shm:
+      name: "camera_shm"
+      field: "realsense_wrist_left"
+
+  - key: "observation.image.realsense_wrist_right"
+    use: true
+    dtype: "video"
+    np_dtype: "uint8"
+    shape: [480, 640, 3]
+    names: ["height", "width", "channel"]
+    shm:
+      name: "camera_shm"
+      field: "realsense_wrist_right"
+  
+  - key: "observation.image.stereo_left"
+    use: true
+    dtype: "video"
+    np_dtype: "uint8"
+    shape: [720, 1280, 3]
+    names: ["height", "width", "channel"]
+    shm:
+      name: "camera_shm"
+      field: "stereo_left"
+
+  - key: "observation.image.stereo_right"
+    use: true
+    dtype: "video"
+    np_dtype: "uint8"
+    shape: [720, 1280, 3]
+    names: ["height", "width", "channel"]
+    shm:
+      name: "camera_shm"
+      field: "stereo_right"
+
+
+  - key: "observation.state"
+    use: true
+    dtype: "float"
+    np_dtype: "float64"
+    shape: [43]
+    names: ["state"]
+    shm:
+      name: "obs_shm"
+      fields: ["obs_hand", "obs_arm", "obs_neck", "obs_waist", "obs_leg"]
+
+  - key: "observation.torque"
+    use: true
+    dtype: "float"
+    np_dtype: "float64"
+    shape: [31]
+    names: ["state"]
+    shm:
+      name: "tau_shm"
+      fields: ["tau_est_arm", "tau_est_neck", "tau_est_waist", "tau_est_leg"]
+
+  - key: "observation.ee_pose"
+    use: true
+    dtype: "float"
+    np_dtype: "float64"
+    shape: [48]
+    names: ["ee_pose"]
+    shm:
+      name: "ee_shm"
+      fields: ["head_mat", "left_wrist_mat", "right_wrist_mat"]
+
+  - key: "action"
+    use: true
+    dtype: "float"
+    np_dtype: "float64"
+    shape: [43]
+    names: ["action"]
+    shm:
+      name: "act_shm"
+      fields: ["act_hand", "act_arm", "act_neck", "act_waist", "act_leg"]

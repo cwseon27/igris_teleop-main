@@ -1,0 +1,60 @@
+sbs_cam_split_undistort_pub:
+  ros__parameters:
+    # Preferred: stable V4L path (symlink), e.g. /dev/v4l/by-id/... or /dev/v4l/by-path/...
+    # If this is non-empty, device_index is ignored.
+    device: "/dev/video0"
+    # Fallback only when `device` is empty.
+    device_index: 18
+    capture_width: 2560
+    capture_height: 720
+    capture_fps: 30.0
+
+    # Publish pacing
+    publish_fps: 30.0
+    camera_info_hz: 1.0
+
+    # Capture backend
+    use_v4l2: true
+    force_mjpg: true
+    buffersize: 1
+
+    # Image transform
+    rotate_180: true
+
+    # Output control
+    resize_scale: 0.5
+    publish_raw: false
+    publish_compressed: true
+    jpeg_quality: 50
+
+    # Topics
+    left_image_topic: /left/image_rect
+    right_image_topic: /right/image_rect
+    left_image_topic_compressed: /left/image_rect/compressed
+    right_image_topic_compressed: /right/image_rect/compressed
+
+    left_info_topic: /left/camera_info
+    right_info_topic: /right/camera_info
+
+    left_frame_id: left_camera
+    right_frame_id: right_camera
+
+    # Monocular undistort params
+    use_optimal_new_camera_matrix: true
+    alpha: 0.0
+    distortion_model: plumb_bob
+
+    use_stereo_rectify: true
+    stereo_npz_path: "stereo_rectify_maps_tuned.npz"
+    stereo_rectify_alpha: 0.0
+    stereo_zero_disparity: true
+
+    left.K: [775.41759739, 0.0, 643.80314126,
+             0.0, 778.11204444, 352.48404218,
+             0.0, 0.0, 1.0]
+    left.D: [-0.32010433, -0.15772447, 0.00699062, -0.00321917, 0.17565373]
+
+    right.K: [637.91669645, 0.0, 621.58351688,
+              0.0, 642.77528872, 369.66446855,
+              0.0, 0.0, 1.0]
+    right.D: [-0.350821744, 0.0953275302, 0.000321910131, 0.00966375599, -0.00805632456]

@@ -1,0 +1,4 @@
+# IGRIS leader FTDI FT232H only (VID:PID 0403:6014, serial FTAU59R6).
+# Install explicitly as root after reviewing docs/ftdi_low_latency.md.
+ACTION=="add", SUBSYSTEM=="usb-serial", DRIVER=="ftdi_sio", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", ATTRS{serial}=="FTAU59R6", ATTR{latency_timer}="1"
+ACTION=="add", SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", ATTRS{idProduct}=="6014", ATTRS{serial}=="FTAU59R6", GROUP="dialout", MODE="0660", TAG+="uaccess"

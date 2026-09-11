@@ -1,0 +1,15 @@
+# Historical upstream URLs. This source distribution has no gitlinks for these
+# empty placeholder directories. Follow install_info.md; do not assume that
+# --recurse-submodules installs dependencies or rebuild the existing endpoint.
+[submodule "ros_ws/src/DynamixelSDK"]
+	path = ros_ws/src/DynamixelSDK
+	url = https://github.com/ROBOTIS-GIT/DynamixelSDK.git
+[submodule "ros_ws/src/ROS-TCP-Endpoint"]
+	path = ros_ws/src/ROS-TCP-Endpoint
+	url = https://github.com/Unity-Technologies/ROS-TCP-Endpoint.git
+[submodule "ros_ws/src/igris_c_description_public"]
+	path = ros_ws/src/igris_c_description_public
+	url = https://github.com/robrosinc/igris_c_description_public.git
+[submodule "third_party/igris_c_sdk_public"]
+	path = third_party/igris_c_sdk_public
+	url = https://github.com/robrosinc/igris_c_sdk_public.git

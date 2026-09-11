@@ -1,0 +1,32 @@
+#!/bin/sh
+set -eu
+
+find_project_root() {
+    search_dir="$(dirname "$(readlink -f "$0")")"
+    while [ "$search_dir" != "/" ]; do
+        if [ -d "$search_dir/policy_archive/reliability" ]; then
+            printf '%s\n' "$search_dir"
+            return 0
+        fi
+        search_dir="$(dirname "$search_dir")"
+    done
+    return 1
+}
+
+project_root="${IGRIS_PROJECT_ROOT:-}"
+if [ -z "$project_root" ]; then
+    project_root="$(find_project_root || true)"
+fi
+if [ -n "$project_root" ]; then
+    export IGRIS_PROJECT_ROOT="$project_root"
+    export IGRIS_RELIABILITY_POLICY_ROOT="${IGRIS_RELIABILITY_POLICY_ROOT:-$project_root/policy_archive/reliability}"
+fi
+
+python_bin="${IGRIS_RELIABILITY_PYTHON:-}"
+if [ -z "$python_bin" ] && [ -n "$project_root" ]; then
+    python_bin="$project_root/.venv-ml/bin/python"
+fi
+if [ ! -x "$python_bin" ]; then
+    python_bin="$(command -v python3)"
+fi
+exec "$python_bin" -m igris_reliability_runtime.controller_main "$@"

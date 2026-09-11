@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>igris_c_sensor</name>
+  <version>0.0.1</version>
+  <description>ROS2 bridge that republishes IGRIS-C compressed image streams.</description>
+  <maintainer email="menggu1234@robros.co.kr">menggu</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>ament_index_cpp</depend>
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>opencv</depend>
+  <exec_depend>stereo_sbs_cam_pub</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

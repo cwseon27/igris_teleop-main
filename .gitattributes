@@ -1,0 +1,22 @@
+# Preserve exact model, calibration, SDK and mesh bytes. Required artifacts are
+# below GitHub's individual-file limit; no Git LFS dependency is introduced.
+*.npz binary
+*.npy binary
+*.joblib binary
+*.pt binary
+*.pth binary
+*.onnx binary
+*.whl binary
+*.a binary
+*.so binary
+*.so.* binary
+*.stl binary
+*.STL binary
+*.gz binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+
+*.sh text eol=lf
+*.py text eol=lf
+*.md text eol=lf

@@ -1,0 +1,26 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from igris_c_sdk/srv/HandInitRequest.srv
+// generated code does not contain a copyright notice
+
+#include "igris_c_sdk/msg/Header.idl"
+
+module igris_c_sdk {
+  module srv {
+    struct HandInitRequest_Request {
+      igris_c_sdk::msg::Header header;
+
+      string request_id;
+    };
+    struct HandInitRequest_Response {
+      igris_c_sdk::msg::Header header;
+
+      string request_id;
+
+      boolean success;
+
+      string message;
+
+      int32 error_code;
+    };
+  };
+};

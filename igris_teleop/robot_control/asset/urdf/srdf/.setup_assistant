@@ -1,0 +1,10 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: ""
+    relative_path: /home/dam/igris_teleop_v4/igris_teleop/robot_control/asset/urdf/igris_c_v2_pelvis.urdf
+  srdf:
+    relative_path: config/IGRIS_C.srdf
+  package_settings:
+    author_name: ""
+    author_email: ""
+    generated_timestamp: 1768971514

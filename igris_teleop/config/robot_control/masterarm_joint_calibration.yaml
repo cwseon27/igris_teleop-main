@@ -1,0 +1,67 @@
+# Master-arm absolute joint calibration.
+#
+# The leader ROS node converts Dynamixel raw ticks to radians around a nominal
+# 2048 center. If the physical leader zero differs from the robot PJS zero, the
+# robot will interpolate to the wrong absolute posture when Start is pressed.
+#
+# The bridge applies:
+#   calibrated_act_arm = raw_leader_arm * scale + offset
+#
+# Joint order:
+#   0  Shoulder_Pitch_L
+#   1  Shoulder_Roll_L
+#   2  Shoulder_Yaw_L
+#   3  Elbow_Pitch_L
+#   4  Wrist_Yaw_L
+#   5  Wrist_Roll_L
+#   6  Wrist_Pitch_L
+#   7  Shoulder_Pitch_R
+#   8  Shoulder_Roll_R
+#   9  Shoulder_Yaw_R
+#   10 Elbow_Pitch_R
+#   11 Wrist_Yaw_R
+#   12 Wrist_Roll_R
+#   13 Wrist_Pitch_R
+#
+# To identify offsets, place the robot and leader in the same intended pose and
+# set offset = robot_obs_arm - raw_leader_arm. Keep scale at 1.0 unless a joint
+# direction or gear ratio is confirmed wrong.
+#
+# Current leader hardware note:
+#   2026-08-07: leader publish was previously blocked by optional hand IDs, so
+#   bridge debug values were sometimes obs_arm hold targets, not actual leader
+#   samples. Do not derive offsets from guard/hold debug lines. With fresh
+#   /joint_states publishing, arm joints are already in robot joint order and
+#   should remain identity unless a measured live leader/robot pair proves a
+#   specific joint needs correction.
+enabled: true
+scale:
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
+offset:
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0
+  - 0.0

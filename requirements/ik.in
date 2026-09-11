@@ -1,0 +1,9 @@
+pin==3.9.0
+proxsuite==0.7.2
+logging_mp==0.1.6
+matplotlib
+prompt_toolkit
+pytest
+pyzmq
+pyyaml
+typing_extensions

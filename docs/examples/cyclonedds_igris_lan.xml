@@ -1,0 +1,14 @@
+<CycloneDDS>
+  <Domain>
+    <General>
+      <Interfaces>
+        <!-- Example only: replace with this PC's verified, unused LAN address.
+             This is the PC address, NOT the robot address (192.168.11.2).
+             The launcher does not load this example automatically. -->
+        <NetworkInterface address="192.168.11.18" autodetermine="false" />
+      </Interfaces>
+      <!-- LAN-only routing: do not choose the robot's Wi-Fi locator. -->
+      <DontRoute>true</DontRoute>
+    </General>
+  </Domain>
+</CycloneDDS>

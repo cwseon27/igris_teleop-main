@@ -1,0 +1,33 @@
+{
+  "thumb_max": 0.1328157566190107,
+  "index_max": 0.18140468310731622,
+  "middle_max": 0.18856511964992928,
+  "ring_max": 0.1788585335139114,
+  "little_max": 0.15743789766050506,
+  "thumb_min": 0.11077557324390934,
+  "index_min": 0.08577130342600163,
+  "middle_min": 0.08108788559200285,
+  "ring_min": 0.07431786662673161,
+  "little_min": 0.07261615851468232,
+  "metadata": {
+    "created_or_updated_unix_time": 1779142058.3427947,
+    "calibration_scope": "hand_side_independent",
+    "source_hand_side": "right",
+    "pose_topic": "/right_hand/poses",
+    "tracked_topic": "/right_hand/is_tracked",
+    "units": "meter",
+    "pose_array_order": {
+      "0": "wrist",
+      "1": "thumb_tip",
+      "2": "index_tip",
+      "3": "middle_tip",
+      "4": "ring_tip",
+      "5": "little_tip"
+    },
+    "distance_definition": "norm(fingertip_position), assuming fingertip positions are already wrist-relative",
+    "meaning": {
+      "max": "open hand fingertip norm mean",
+      "min": "closed hand fingertip norm mean"
+    }
+  }
+}

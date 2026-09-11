@@ -1,0 +1,34 @@
+#!/bin/sh
+set -eu
+
+find_project_root() {
+    search_dir="$(dirname "$(readlink -f "$0")")"
+    while [ "$search_dir" != "/" ]; do
+        if [ -d "$search_dir/policy_archive/reliability" ]; then
+            printf '%s\n' "$search_dir"
+            return 0
+        fi
+        search_dir="$(dirname "$search_dir")"
+    done
+    return 1
+}
+
+project_root="${IGRIS_PROJECT_ROOT:-}"
+if [ -z "$project_root" ]; then
+    project_root="$(find_project_root || true)"
+fi
+if [ -n "$project_root" ]; then
+    export IGRIS_PROJECT_ROOT="$project_root"
+fi
+
+python_bin="${IGRIS_MEDIAPIPE_PYTHON:-}"
+if [ -z "$python_bin" ] && [ -n "$project_root" ]; then
+    python_bin="$project_root/.venv-mediapipe/bin/python"
+fi
+if [ ! -x "$python_bin" ]; then
+    echo "MediaPipe Python not found: $python_bin" >&2
+    echo "Run ros_ws/src/mediapipe_hand_pose_bridge/scripts/setup_mediapipe_venv.sh" >&2
+    exit 1
+fi
+
+exec "$python_bin" -m mediapipe_hand_pose_bridge.mediapipe_hand_pose_publisher "$@"

@@ -1,0 +1,17 @@
+0411 IGRISC camera init setting change
+
+ROS 2로 카메라를 사용하려면 Cyclone DDS를 먼저 중지해야 합니다.
+
+[Camera Cyclone DDS 중지]
+sudo systemctl stop igris-c-jetson.service
+
+[Camera Cyclone DDS 시작]
+sudo systemctl start igris-c-jetson.service
+
+[Body/Hand DDS NIC fallback]
+~/.ros/ros2/cyclonedds.xml uses the shell-exported CYCLONEDDS_URI from ~/.bashrc.
+If you want wired-first but also allow wireless fallback, keep both interfaces listed and set:
+- enp9s0: presence_required="false"
+- wlp8s0: presence_required="false"
+If only wireless is used, do not leave enp9s0 as required, or ControllerCore DDS init can fail with:
+"enp9s0: does not match an available interface"

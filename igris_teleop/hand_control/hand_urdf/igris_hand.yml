@@ -1,0 +1,39 @@
+left:
+  type: vector
+  urdf_path: left_hand_igris_c.urdf
+  wrist_link_name: "base_link"
+
+  # Target refers to the retargeting target, which is the robot hand
+  target_joint_names: ['0_Joint_Thumb_Proximal', '1_Joint_Thumb_Middle',
+                       '3_Joint_Index_Middle', '5_Joint_Middle_Middle', 
+                       '7_Joint_Ring_Middle', '9_Joint_Little_Middle' ]
+  target_origin_link_names: [ "base_link", "base_link", "base_link", "base_link", "base_link"]
+  target_task_link_names: [ "Link_Thumb_Tip", "Link_Index_Tip", "Link_Middle_Tip", "Link_Ring_Tip", "Link_Little_Tip" ]
+  scaling_factor: 1.0
+
+  # Source refers to the retargeting input, which usually corresponds to the human hand
+  # The joint indices of human hand joint which corresponds to each link in the target_link_names
+  target_link_human_indices: [ [ 0, 0, 0, 0, 0 ], [ 4, 9, 14, 19, 24 ] ]
+
+  # A smaller alpha means stronger filtering, i.e. more smooth but also larger latency
+  low_pass_alpha: 0.65
+
+right:
+  type: vector
+  urdf_path: right_hand_igris_c.urdf
+  wrist_link_name: "base_link"
+
+  # Target refers to the retargeting target, which is the robot hand
+  target_joint_names: ['0_Joint_Thumb_Proximal', '1_Joint_Thumb_Middle',
+                       '3_Joint_Index_Middle', '5_Joint_Middle_Middle', 
+                       '7_Joint_Ring_Middle', '9_Joint_Little_Middle' ]
+  target_origin_link_names: [ "base_link", "base_link", "base_link", "base_link", "base_link"]
+  target_task_link_names: [ "Link_Thumb_Tip", "Link_Index_Tip", "Link_Middle_Tip", "Link_Ring_Tip", "Link_Little_Tip" ]
+  scaling_factor: 1.0
+
+  # Source refers to the retargeting input, which usually corresponds to the human hand
+  # The joint indices of human hand joint which corresponds to each link in the target_link_names
+  target_link_human_indices: [ [ 0, 0, 0, 0, 0 ], [ 4, 9, 14, 19, 24 ] ]
+
+  # A smaller alpha means stronger filtering, i.e. more smooth but also larger latency
+  low_pass_alpha: 0.65

@@ -1,0 +1,25 @@
+#!/bin/sh
+set -eu
+
+project_root="${IGRIS_PROJECT_ROOT:-}"
+if [ -z "$project_root" ]; then
+    search_dir="$(dirname "$(readlink -f "$0")")"
+    while [ "$search_dir" != "/" ]; do
+        if [ -d "$search_dir/igris_teleop/hand_control" ]; then
+            project_root="$search_dir"
+            break
+        fi
+        search_dir="$(dirname "$search_dir")"
+    done
+fi
+if [ -z "$project_root" ]; then
+    echo "IGRIS_PROJECT_ROOT is required for the shared hand retarget framework" >&2
+    exit 1
+fi
+export PYTHONPATH="$project_root${PYTHONPATH:+:$PYTHONPATH}"
+python_bin="${IGRIS_RELIABILITY_PYTHON:-$project_root/.venv-ml/bin/python}"
+if [ ! -x "$python_bin" ]; then
+    echo "Retarget Python not found: $python_bin (requires torch, pinocchio and nlopt)" >&2
+    exit 1
+fi
+exec "$python_bin" -m igris_reliability_runtime.hand_retarget_node "$@"

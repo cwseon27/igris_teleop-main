@@ -1,0 +1,87 @@
+.venv/
+.venv-ml/
+.venv-sim/
+.venv-ik/
+.venv-mediapipe/
+.conda-ik/
+venv/
+dataset/
+output/
+AutoBagger_dataset_origin/
+
+# Python cache / bytecode
+igris_teleop/__pycache__/
+igris_teleop/*.py[cod]
+igris_teleop/*.pyc
+igris_teleop/*.pyd
+
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyd
+
+# Local editor / runtime state
+.vscode/
+.idea/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+backups/
+codex_report/
+codex_plan/
+*.env.local
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+id_rsa
+id_ed25519
+local_state/
+!local_state/
+local_state/*
+!local_state/README.md
+# Required robot-matched HandCmd/HandState schema; CMake explicitly uses it.
+# Do not exclude these with broad binary/dist ignore rules.
+!local_state/robot_hand_sdk/
+local_state/robot_hand_sdk/*
+!local_state/robot_hand_sdk/README.md
+!local_state/robot_hand_sdk/SHA256SUMS
+!local_state/robot_hand_sdk/include/
+!local_state/robot_hand_sdk/lib/
+local_state/robot_hand_sdk/include/*
+!local_state/robot_hand_sdk/include/igris_sdk/
+local_state/robot_hand_sdk/include/igris_sdk/*
+!local_state/robot_hand_sdk/include/igris_sdk/igris_c_msgs.hpp
+local_state/robot_hand_sdk/lib/*
+!local_state/robot_hand_sdk/lib/libigris_sdk.a
+imgui.ini
+error log
+
+# Generated datasets / checkpoints / logs
+igris_artifacts/
+!igris_artifacts/
+igris_artifacts/*
+!igris_artifacts/README.md
+!igris_artifacts/walking/
+igris_artifacts/walking/*
+!igris_artifacts/walking/policy_1.pt
+!igris_artifacts/walking/v2/
+igris_artifacts/walking/v2/*
+!igris_artifacts/walking/v2/model_0030000.onnx
+!igris_artifacts/walking/v2/igris_12dof_fast_sac_deploy_handoff.md
+igris_teleop/robot_control/outputs/
+igris_teleop/robot_control/diagnostics/outputs/
+igris_teleop/sim/robot/mujoco/.tmp_*.xml
+igris_teleop/training/analysis/dataset_analysis/outputs/
+*.zip
+
+ros_ws/build/
+ros_ws/install/
+ros_ws/log/
+
+# Generated CMake/colcon trees, including nested SDK example builds.
+build/
+install/
+log/

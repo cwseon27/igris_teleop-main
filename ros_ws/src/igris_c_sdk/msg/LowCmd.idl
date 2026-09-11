@@ -1,0 +1,25 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from igris_c_sdk/msg/LowCmd.msg
+// generated code does not contain a copyright notice
+
+#include "igris_c_sdk/msg/Header.idl"
+#include "igris_c_sdk/msg/MotorCmd.idl"
+
+module igris_c_sdk {
+  module msg {
+    typedef uint8 uint8__5[5];
+    typedef igris_c_sdk::msg::MotorCmd igris_c_sdk__msg__MotorCmd;
+    typedef igris_c_sdk__msg__MotorCmd igris_c_sdk__msg__MotorCmd__31[31];
+    module LowCmd_Constants {
+      const uint8 KINEMATIC_MODE_MS = 0;
+      const uint8 KINEMATIC_MODE_PJS = 1;
+    };
+    struct LowCmd {
+      igris_c_sdk::msg::Header header;
+
+      uint8__5 kinematic_modes;
+
+      igris_c_sdk__msg__MotorCmd__31 motors;
+    };
+  };
+};

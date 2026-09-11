@@ -1,0 +1,21 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from igris_c_sdk/msg/ServiceResponse.msg
+// generated code does not contain a copyright notice
+
+#include "igris_c_sdk/msg/Header.idl"
+
+module igris_c_sdk {
+  module msg {
+    struct ServiceResponse {
+      igris_c_sdk::msg::Header header;
+
+      string request_id;
+
+      boolean success;
+
+      string message;
+
+      int32 error_code;
+    };
+  };
+};

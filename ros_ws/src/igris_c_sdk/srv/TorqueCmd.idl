@@ -1,0 +1,33 @@
+// generated from rosidl_adapter/resource/srv.idl.em
+// with input from igris_c_sdk/srv/TorqueCmd.srv
+// generated code does not contain a copyright notice
+
+#include "igris_c_sdk/msg/Header.idl"
+
+module igris_c_sdk {
+  module srv {
+    module TorqueCmd_Request_Constants {
+      const uint8 TORQUE_NONE = 0;
+      const uint8 TORQUE_ON = 1;
+      const uint8 TORQUE_OFF = 2;
+    };
+    struct TorqueCmd_Request {
+      igris_c_sdk::msg::Header header;
+
+      string request_id;
+
+      uint8 torque;
+    };
+    struct TorqueCmd_Response {
+      igris_c_sdk::msg::Header header;
+
+      string request_id;
+
+      boolean success;
+
+      string message;
+
+      int32 error_code;
+    };
+  };
+};

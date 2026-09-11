@@ -1,0 +1,26 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from igris_c_sdk/msg/LowState.msg
+// generated code does not contain a copyright notice
+
+#include "igris_c_sdk/msg/Header.idl"
+#include "igris_c_sdk/msg/IMUState.idl"
+#include "igris_c_sdk/msg/JointState.idl"
+#include "igris_c_sdk/msg/MotorState.idl"
+
+module igris_c_sdk {
+  module msg {
+    typedef igris_c_sdk::msg::MotorState igris_c_sdk__msg__MotorState;
+    typedef igris_c_sdk__msg__MotorState igris_c_sdk__msg__MotorState__31[31];
+    typedef igris_c_sdk::msg::JointState igris_c_sdk__msg__JointState;
+    typedef igris_c_sdk__msg__JointState igris_c_sdk__msg__JointState__31[31];
+    struct LowState {
+      igris_c_sdk::msg::Header header;
+
+      igris_c_sdk::msg::IMUState imu_state;
+
+      igris_c_sdk__msg__MotorState__31 motor_state;
+
+      igris_c_sdk__msg__JointState__31 joint_state;
+    };
+  };
+};

@@ -1,0 +1,45 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from igris_c_sdk/msg/BmsState.msg
+// generated code does not contain a copyright notice
+
+#include "igris_c_sdk/msg/Header.idl"
+
+module igris_c_sdk {
+  module msg {
+    module BmsState_Constants {
+      const uint8 RELAY_OFF = 0;
+      const uint8 RELAY_ON = 1;
+      const uint8 ESTOP_RELEASED = 0;
+      const uint8 ESTOP_PRESSED = 1;
+      const uint8 BMS_DISCONNECTED = 0;
+      const uint8 BMS_CONNECTED = 1;
+      @verbatim (language="comment", text=
+        "0b00: neither (bit0=BMS, bit1=motor)")
+      const uint8 BMS_NOT_INITIALIZED = 0;
+      @verbatim (language="comment", text=
+        "0b01: only BMS initialized")
+      const uint8 BMS_INITIALIZED = 1;
+      @verbatim (language="comment", text=
+        "0b10: only motor initialized")
+      const uint8 MOTOR_INITIALIZED = 2;
+      @verbatim (language="comment", text=
+        "0b11: BMS | motor")
+      const uint8 BOTH_INITIALIZED = 3;
+    };
+    struct BmsState {
+      igris_c_sdk::msg::Header header;
+
+      uint8 body_power;
+
+      uint8 legs_power;
+
+      uint8 estop;
+
+      uint8 connect;
+
+      float battery;
+
+      uint8 bms_init_state;
+    };
+  };
+};

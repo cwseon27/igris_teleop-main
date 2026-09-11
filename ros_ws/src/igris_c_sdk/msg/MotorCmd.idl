@@ -1,0 +1,22 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from igris_c_sdk/msg/MotorCmd.msg
+// generated code does not contain a copyright notice
+
+
+module igris_c_sdk {
+  module msg {
+    struct MotorCmd {
+      uint16 id;
+
+      float q;
+
+      float dq;
+
+      float tau;
+
+      float kp;
+
+      float kd;
+    };
+  };
+};

@@ -1,0 +1,4 @@
+logging_mp==0.1.6
+numpy==1.26.4
+pyyaml
+mujoco

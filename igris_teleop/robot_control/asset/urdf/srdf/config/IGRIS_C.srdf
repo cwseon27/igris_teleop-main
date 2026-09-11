@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="IGRIS_C">
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+    <disable_collisions link1="Left_Hand" link2="Link_Wrist_Yaw_Left" reason="Adjacent"/>
+    <disable_collisions link1="Link_Ankle_Roll_Left" link2="Link_Hip_Roll_Left" reason="Never"/>
+    <disable_collisions link1="Link_Ankle_Roll_Left" link2="Link_Hip_Roll_Right" reason="Never"/>
+    <disable_collisions link1="Link_Ankle_Roll_Left" link2="Link_Knee_Pitch_Left" reason="Adjacent"/>
+    <disable_collisions link1="Link_Ankle_Roll_Right" link2="Link_Hip_Roll_Left" reason="Never"/>
+    <disable_collisions link1="Link_Ankle_Roll_Right" link2="Link_Hip_Roll_Right" reason="Never"/>
+    <disable_collisions link1="Link_Ankle_Roll_Right" link2="Link_Knee_Pitch_Right" reason="Adjacent"/>
+    <disable_collisions link1="Link_Ankle_Roll_Right" link2="Link_Wrist_Yaw_Left" reason="Never"/>
+    <disable_collisions link1="Link_Hip_Roll_Left" link2="Link_Hip_Roll_Right" reason="Adjacent"/>
+    <disable_collisions link1="Link_Hip_Roll_Left" link2="Link_Knee_Pitch_Left" reason="Adjacent"/>
+    <disable_collisions link1="Link_Hip_Roll_Left" link2="Link_Knee_Pitch_Right" reason="Never"/>
+    <disable_collisions link1="Link_Hip_Roll_Left" link2="Link_Neck_Pitch" reason="Never"/>
+    <disable_collisions link1="Link_Hip_Roll_Left" link2="Link_Wrist_Yaw_Left" reason="Default"/>
+    <disable_collisions link1="Link_Hip_Roll_Left" link2="body_link" reason="Adjacent"/>
+    <disable_collisions link1="Link_Hip_Roll_Right" link2="Link_Knee_Pitch_Right" reason="Adjacent"/>
+    <disable_collisions link1="Link_Hip_Roll_Right" link2="Link_Neck_Pitch" reason="Never"/>
+    <disable_collisions link1="Link_Hip_Roll_Right" link2="Link_Wrist_Yaw_Right" reason="Default"/>
+    <disable_collisions link1="Link_Hip_Roll_Right" link2="body_link" reason="Adjacent"/>
+    <disable_collisions link1="Link_Knee_Pitch_Left" link2="Link_Neck_Pitch" reason="Never"/>
+    <disable_collisions link1="Link_Knee_Pitch_Right" link2="Link_Neck_Pitch" reason="Never"/>
+    <disable_collisions link1="Link_Neck_Pitch" link2="body_link" reason="Adjacent"/>
+    <disable_collisions link1="Link_Wrist_Yaw_Left" link2="body_link" reason="Adjacent"/>
+    <disable_collisions link1="Link_Wrist_Yaw_Right" link2="Right_Hand" reason="Adjacent"/>
+    <disable_collisions link1="Link_Wrist_Yaw_Right" link2="body_link" reason="Adjacent"/>
+</robot>

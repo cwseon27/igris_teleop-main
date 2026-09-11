@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IGRIS Teleop</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="tabs">
+        <button class="tab active" data-page-tab="teleop">Teleop</button>
+        <button class="tab" data-page-tab="hybrid">Hybrid Teleop Info</button>
+        <button class="tab" data-page-tab="experiments">Experiments</button>
+        <button class="tab" data-page-tab="visualizer">Visualizer</button>
+        <button class="tab" data-page-tab="dataset">Dataset Viewer</button>
+        <div id="message" class="message">connecting</div>
+      </div>
+
+      <main id="teleopPage" class="page teleop-page">
+        <section class="top-row">
+          <section class="group workers-group">
+            <h2>Workers</h2>
+
+            <div id="manualWorkers" class="manual-workers"></div>
+
+            <div class="inline-field camera-mode-row">
+              <label>camera mode</label>
+              <select id="cameraModeSelect"></select>
+              <button id="cameraStartButton">Start</button>
+            </div>
+
+            <div id="simStereoBaselineRow" class="sim-stereo-row hidden">
+              <label for="simStereoBaselineRange">sim eye distance</label>
+              <input id="simStereoBaselineRange" type="range" min="40" max="200" step="1" value="120" />
+              <div class="sim-stereo-value">
+                <input id="simStereoBaselineInput" type="number" min="40" max="200" step="1" value="120" />
+                <span>mm</span>
+              </div>
+              <button id="simStereoBaselineApplyButton">Apply</button>
+            </div>
+
+            <div class="worker-buttons">
+              <button id="applyModeButton" class="primary">Apply workers</button>
+              <button id="shutdownWorkersButton">Shutdown (set level)</button>
+            </div>
+
+            <div class="form-grid mode-select-grid">
+              <label>mode</label>
+              <select id="modeSelect"></select>
+
+              <label class="teleop-field">teleop device</label>
+              <select id="teleopDeviceSelect" class="teleop-field"></select>
+
+              <label class="teleop-hand-field">hand source</label>
+              <select id="teleopHandSourceSelect" class="teleop-hand-field"></select>
+            </div>
+
+            <div id="teleopReliabilityPanel" class="reliability-panel teleop-reliability-field hidden">
+              <div class="reliability-header">
+                <strong>Reliability runtime</strong>
+                <span id="reliabilityRuntimeStatus" class="badge STOPPED">STOPPED</span>
+              </div>
+              <div class="form-grid reliability-grid">
+                <label>hand model</label>
+                <select id="reliabilityHandModelSelect"></select>
+                <label>controller model</label>
+                <select id="reliabilityControllerModelSelect"></select>
+              </div>
+              <div class="reliability-actions">
+                <button id="reliabilityRuntimeButton" type="button">Start reliability</button>
+                <span id="reliabilityRuntimeMeta" class="small-status">-</span>
+              </div>
+            </div>
+
+            <div class="mode-specific">
+              <div class="form-grid mode-field" data-mode="walking">
+                <label>walking profile</label>
+                <select id="walkingProfileInput"></select>
+                <label>walking model</label>
+                <div class="path-picker">
+                  <input id="walkingPolicyPathInput" />
+                  <button id="walkingPolicyBrowseButton" type="button">Browse...</button>
+                </div>
+                <label>startup blend</label>
+                <label class="check-inline">
+                  <input id="walkingStartupBlendInput" type="checkbox" checked />
+                  enabled
+                </label>
+                <div class="walking-toolbar">
+                  <label>vx<input id="walkVx" type="number" step="0.01" value="0" /></label>
+                  <label>vy<input id="walkVy" type="number" step="0.01" value="0" /></label>
+                  <label>dyaw<input id="walkDyaw" type="number" step="0.01" value="0" /></label>
+                  <button id="walkingUpdateButton">Update</button>
+                  <button id="walkingZeroButton">Zero</button>
+                  <button id="walkingStartButton">Walking Start</button>
+                </div>
+              </div>
+
+              <div class="form-grid mode-field" data-mode="inference">
+                <label>policy</label>
+                <select id="inferencePolicySelect">
+                  <option value="act">act</option>
+                  <option value="diffusion_policy">diffusion_policy</option>
+                  <option value="pi0">pi0</option>
+                  <option value="pi0.5">pi0.5</option>
+                </select>
+                <label>dataset</label>
+                <div class="path-picker">
+                  <input id="inferenceDatasetInput" value="0304_실증과제_dataset_train/0304_padding" />
+                  <button id="inferenceDatasetBrowseButton" type="button">Browse...</button>
+                </div>
+                <label>checkpoint</label>
+                <div class="path-picker">
+                  <input id="inferenceCheckpointInput" value="ACT_0304_padding/checkpoints/200000/pretrained_model" />
+                  <button id="inferenceCheckpointBrowseButton" type="button">Browse...</button>
+                </div>
+                <label class="act-policy-field">chunk size</label>
+                <input class="act-policy-field" id="inferenceChunkInput" type="number" min="1" value="100" />
+                <label class="act-policy-field">n action</label>
+                <input class="act-policy-field" id="inferenceActionStepInput" type="number" min="1" value="100" />
+                <label class="diffusion-policy-field">horizon</label>
+                <input class="diffusion-policy-field" id="inferenceHorizonInput" type="number" min="8" step="8" value="16" />
+                <label class="diffusion-policy-field">n action</label>
+                <input class="diffusion-policy-field" id="inferenceDiffusionActionStepInput" type="number" min="1" value="8" />
+                <label>use state</label>
+                <label class="check-inline"><input id="inferenceUseStateInput" type="checkbox" /> dataset</label>
+                <label>use video</label>
+                <label class="check-inline"><input id="inferenceUseVideoInput" type="checkbox" /> dataset</label>
+                <label>use torque</label>
+                <label class="check-inline"><input id="inferenceUseTorqueInput" type="checkbox" /> dataset</label>
+                <label class="instruction-policy-field">instruction</label>
+                <input class="instruction-policy-field" id="inferenceInstructionInput" />
+              </div>
+
+              <div class="form-grid mode-field" data-mode="replay">
+                <label>replay dataset</label>
+                <div class="path-picker">
+                  <input id="replayDatasetInput" value="0304_실증과제_dataset_test/0304_lifting" />
+                  <button id="replayDatasetBrowseButton" type="button">Browse...</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="modeWorkers" class="mode-workers"></div>
+          </section>
+
+          <section class="group level-group">
+            <h2>Level events (mp.Event)</h2>
+            <div class="level-grid">
+              <span>ready</span>
+              <button data-level="ready">toggle</button>
+              <span>start</span>
+              <button data-level="start">toggle</button>
+              <span>home</span>
+              <button data-level="home">toggle</button>
+              <span>hand initial</span>
+              <button data-level="hand_init">trigger</button>
+              <span>shutdown</span>
+              <span id="shutdownStateLabel" class="state-text">CLEAR</span>
+            </div>
+          </section>
+
+          <section class="group record-group">
+            <h2>Record controls</h2>
+            <div class="form-grid">
+              <label>dataset name</label>
+              <input id="collectDatasetInput" />
+              <label>task</label>
+              <div class="task-field">
+                <div id="taskList" class="task-list"></div>
+                <div class="task-buttons">
+                  <button id="taskAddButton">+</button>
+                  <button id="taskRemoveButton">-</button>
+                </div>
+                <input id="taskInput" type="hidden" />
+              </div>
+              <label>collect_data</label>
+              <div class="inline-action">
+                <button id="collectDataButton">Start</button>
+                <span id="collectDataStatus" class="state-text">STOPPED</span>
+              </div>
+              <label>record start</label>
+              <button data-record="start">trigger</button>
+              <label>record done</label>
+              <button data-record="done">trigger</button>
+              <label>record reset</label>
+              <button data-record="reset">trigger</button>
+            </div>
+            <div id="recordStatus" class="small-status">idle</div>
+            <div id="datasetStatus" class="small-status">dataset folder: -</div>
+          </section>
+        </section>
+
+        <section class="group camera-group">
+          <h2>Camera</h2>
+          <div class="camera-grid">
+            <figure class="no-frame">
+              <img src="/camera/realsense_wrist_left.mjpg?max_width=720" />
+              <figcaption>realsense_wrist_left</figcaption>
+            </figure>
+            <figure class="no-frame">
+              <img src="/camera/stereo_left.mjpg?max_width=900" />
+              <figcaption>stereo_left</figcaption>
+            </figure>
+            <figure class="no-frame">
+              <img src="/camera/realsense_wrist_right.mjpg?max_width=720" />
+              <figcaption>realsense_wrist_right</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <section class="bottom-row">
+          <section class="group logs-group">
+            <div class="logs-header">
+              <h2>Logs</h2>
+              <span id="logCount" class="log-count">0 / 0</span>
+            </div>
+            <div class="logs-toolbar">
+              <select id="logLevelFilter">
+                <option value="all">All levels</option>
+                <option value="warn">Warnings+</option>
+                <option value="error">Errors</option>
+              </select>
+              <select id="logSourceFilter">
+                <option value="all">All sources</option>
+              </select>
+              <input id="logSearchInput" placeholder="Search logs" />
+              <button id="logPauseButton" type="button">Pause</button>
+            </div>
+            <div id="logs" class="logs-view" role="log" aria-live="polite"></div>
+          </section>
+
+          <section class="group input-monitor-group">
+            <div class="logs-header">
+              <h2>Leader / VR</h2>
+              <span id="inputMonitorTime" class="log-count">--:--:--</span>
+            </div>
+            <div id="inputMonitor" class="input-monitor-view" role="log" aria-live="polite"></div>
+          </section>
+        </section>
+      </main>
+
+      <main id="hybridPage" class="page hybrid-page hybrid-inactive">
+        <section class="group hybrid-controls-group">
+          <div class="hybrid-section-header">
+            <h2>Hybrid Camera Setup</h2>
+            <span id="hybridPreviewSource" class="badge STOPPED">STOPPED</span>
+          </div>
+
+          <div class="hybrid-control-grid">
+            <label for="hybridLeftDeviceSelect">left camera device</label>
+            <select id="hybridLeftDeviceSelect"></select>
+
+            <label for="hybridRightDeviceSelect">right camera device</label>
+            <select id="hybridRightDeviceSelect"></select>
+
+            <label for="hybridTrapezoidToggle">trapezoid</label>
+            <label class="check-inline hybrid-switch">
+              <input id="hybridTrapezoidToggle" type="checkbox" checked />
+              enabled
+            </label>
+
+            <label for="hybridSwapLrToggle">swap L/R</label>
+            <label class="check-inline hybrid-switch">
+              <input id="hybridSwapLrToggle" type="checkbox" checked />
+              enabled
+            </label>
+
+            <label for="hybridMirrorToggle">mirror</label>
+            <label class="check-inline hybrid-switch">
+              <input id="hybridMirrorToggle" type="checkbox" />
+              enabled
+            </label>
+
+            <label for="hybridBottomWidthRange">bottom width</label>
+            <div class="hybrid-width-control">
+              <input id="hybridBottomWidthRange" type="range" min="1" max="640" step="1" value="320" />
+              <input id="hybridBottomWidthInput" type="number" min="1" max="640" step="1" value="320" />
+              <span>px</span>
+            </div>
+          </div>
+
+          <div class="hybrid-actions">
+            <button id="hybridApplyButton" type="button">Apply settings</button>
+            <button id="hybridTestButton" class="primary" type="button">Start MediaPipe test</button>
+          </div>
+
+          <div class="hybrid-camera-status-grid">
+            <div>
+              <strong>LEFT</strong>
+              <span id="hybridLeftStatus">waiting</span>
+            </div>
+            <div>
+              <strong>RIGHT</strong>
+              <span id="hybridRightStatus">waiting</span>
+            </div>
+          </div>
+          <div id="hybridRuntimeMeta" class="small-status">stopped</div>
+        </section>
+
+        <section class="group hybrid-preview-group">
+          <h2>Camera Pipeline</h2>
+          <div class="hybrid-preview-grid">
+            <figure class="no-frame">
+              <img data-hybrid-preview="left/raw" alt="left raw camera" />
+              <figcaption>LEFT / RAW</figcaption>
+            </figure>
+            <figure class="no-frame">
+              <img data-hybrid-preview="left/trapezoid" alt="left trapezoid camera" />
+              <figcaption>LEFT / TRAPEZOID</figcaption>
+            </figure>
+            <figure class="no-frame">
+              <img data-hybrid-preview="left/mediapipe" alt="left MediaPipe result" />
+              <figcaption>LEFT / MEDIAPIPE</figcaption>
+            </figure>
+            <figure>
+              <img data-hybrid-preview="right/raw" alt="right raw camera" />
+              <figcaption>RIGHT / RAW</figcaption>
+            </figure>
+            <figure>
+              <img data-hybrid-preview="right/trapezoid" alt="right trapezoid camera" />
+              <figcaption>RIGHT / TRAPEZOID</figcaption>
+            </figure>
+            <figure>
+              <img data-hybrid-preview="right/mediapipe" alt="right MediaPipe result" />
+              <figcaption>RIGHT / MEDIAPIPE</figcaption>
+            </figure>
+          </div>
+        </section>
+      </main>
+
+      <main id="experimentsPage" class="page experiments-page experiments-inactive">
+        <section class="group experiment-controls-group">
+          <div class="experiment-section-header">
+            <h2>Experiment Scene</h2>
+            <span id="experimentSceneStatus" class="badge STOPPED">SIM OFF</span>
+          </div>
+
+          <div class="experiment-task-field">
+            <label for="experimentTaskSelect">task</label>
+            <select id="experimentTaskSelect"></select>
+          </div>
+
+          <div class="experiment-actions">
+            <button id="experimentSpawnButton" class="primary" type="button">Spawn Task</button>
+            <button id="experimentTaskResetButton" type="button">Reset Task</button>
+            <button id="experimentAllResetButton" type="button">Clear Scene</button>
+          </div>
+
+          <div class="experiment-runtime">
+            <span>active scene</span>
+            <strong id="experimentActiveTask">robot only</strong>
+          </div>
+          <div id="experimentRuntimeMeta" class="small-status">simulator stopped</div>
+        </section>
+
+        <section class="group experiment-spec-group">
+          <h2>Task Configuration</h2>
+          <dl class="experiment-spec">
+            <dt>workspace</dt>
+            <dd id="experimentWorkspace">-</dd>
+            <dt>objects</dt>
+            <dd id="experimentObjects">-</dd>
+            <dt>goal</dt>
+            <dd id="experimentGoal">-</dd>
+          </dl>
+        </section>
+      </main>
+
+      <main id="visualizerPage" class="page visualizer-page visualizer-inactive">
+        <section class="group visualizer-plots-group">
+          <h2>Upper / Lower Body</h2>
+          <div class="visualizer-plot-grid">
+            <section class="plot-panel">
+              <h3>Upper Body</h3>
+              <div id="armChart" class="chart-surface"></div>
+            </section>
+            <section class="plot-panel">
+              <h3>Lower Body</h3>
+              <div id="legChart" class="chart-surface"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="visualizer-side">
+          <section class="group runtime-diagnostics-group">
+            <div class="logs-header">
+              <h2>Runtime Diagnostics</h2>
+              <span id="runtimeDiagnosticsSummary" class="log-count">no data</span>
+            </div>
+            <div id="runtimeDiagnostics" class="runtime-diagnostics"></div>
+          </section>
+
+          <section class="group viser-group">
+            <h2>Viser</h2>
+            <div class="viser-toolbar">
+              <input id="viserUrlInput" />
+              <button id="viserReloadButton" type="button">Reload</button>
+              <a id="viserOpenLink" class="button-link" target="_blank" rel="noreferrer">Open</a>
+            </div>
+            <iframe id="viserFrame" class="viser-frame" title="Viser"></iframe>
+          </section>
+        </section>
+      </main>
+
+      <main id="datasetPage" class="page dataset-page dataset-inactive">
+        <section class="group dataset-browser-group">
+          <h2>Datasets</h2>
+          <div class="dataset-root-row">
+            <input id="datasetRootInput" />
+            <button id="datasetRootBrowseButton" type="button">Browse...</button>
+            <button id="datasetRootRefreshButton" type="button">Refresh</button>
+          </div>
+          <div id="datasetList" class="dataset-list"></div>
+          <section class="dataset-label-panel">
+            <div class="dataset-label-header">
+              <strong>Segment Labeling</strong>
+              <span id="datasetLabelStatus">No labels loaded.</span>
+            </div>
+            <div id="datasetSegmentList" class="dataset-segment-list"></div>
+            <div class="dataset-label-row">
+              <label>Segment class</label>
+              <select id="datasetSegmentClassSelect"></select>
+            </div>
+            <div class="dataset-label-buttons split-buttons">
+              <button id="datasetSplitSegmentButton" type="button">Split @ Frame</button>
+              <button id="datasetMergePrevButton" type="button">Merge Prev</button>
+              <button id="datasetMergeNextButton" type="button">Merge Next</button>
+            </div>
+            <div class="dataset-label-row">
+              <label>Class</label>
+              <select id="datasetClassManageSelect"></select>
+            </div>
+            <div class="dataset-label-row">
+              <label>Name</label>
+              <input id="datasetClassNameInput" />
+            </div>
+            <div class="dataset-label-buttons">
+              <button id="datasetAddClassButton" type="button">Add Class</button>
+              <button id="datasetRenameClassButton" type="button">Rename Class</button>
+            </div>
+            <div class="dataset-label-buttons">
+              <button id="datasetResetLabelsButton" type="button">Reset Episode</button>
+              <button id="datasetSaveLabelsButton" class="primary" type="button">Save Labels</button>
+            </div>
+          </section>
+        </section>
+
+        <section class="group dataset-viewer-group">
+          <h2>Dataset Viewer</h2>
+          <div class="dataset-toolbar">
+            <label>episode</label>
+            <select id="datasetEpisodeSelect"></select>
+            <label>stream</label>
+            <select id="datasetImageStreamSelect"></select>
+            <button id="datasetPlayButton" type="button">Play</button>
+            <input id="datasetFrameSlider" type="range" min="0" max="0" value="0" />
+            <span id="datasetFrameLabel" class="dataset-frame-label">0 / 0</span>
+          </div>
+          <div id="datasetViewerSummary" class="dataset-summary">Select a dataset.</div>
+
+          <div class="dataset-viewer-main">
+            <figure class="dataset-frame-figure">
+              <img id="datasetFrameImage" alt="dataset frame" />
+              <figcaption id="datasetFrameCaption">frame</figcaption>
+            </figure>
+            <pre id="datasetInfoText" class="dataset-info-text">No dataset loaded.</pre>
+          </div>
+
+          <div class="dataset-plot-grid">
+            <section class="dataset-plot-panel">
+              <h3>Hand</h3>
+              <div id="datasetPlotHand" class="chart-surface"></div>
+            </section>
+            <section class="dataset-plot-panel">
+              <h3>Arm</h3>
+              <div id="datasetPlotArm" class="chart-surface"></div>
+            </section>
+            <section class="dataset-plot-panel">
+              <h3>Neck</h3>
+              <div id="datasetPlotNeck" class="chart-surface"></div>
+            </section>
+            <section class="dataset-plot-panel">
+              <h3>Waist</h3>
+              <div id="datasetPlotWaist" class="chart-surface"></div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+    <div id="fileDialog" class="file-dialog-backdrop hidden">
+      <section class="file-dialog">
+        <header>
+          <strong id="fileDialogTitle">Select path</strong>
+          <button id="fileDialogCloseButton" type="button">Close</button>
+        </header>
+        <div class="file-dialog-meta">
+          <span id="fileDialogRoot"></span>
+          <span id="fileDialogCwd"></span>
+        </div>
+        <div class="file-dialog-actions">
+          <button id="fileDialogUpButton" type="button">Up</button>
+          <button id="fileDialogSelectCurrentButton" type="button">Select current folder</button>
+        </div>
+        <div id="fileDialogEntries" class="file-dialog-entries"></div>
+        <footer>
+          <span id="fileDialogSelected"></span>
+          <button id="fileDialogCancelButton" type="button">Cancel</button>
+          <button id="fileDialogSelectButton" class="primary" type="button">Select</button>
+        </footer>
+      </section>
+    </div>
+    <script src="/static/vendor/echarts.min.js"></script>
+    <script src="/static/app.js"></script>
+  </body>
+</html>

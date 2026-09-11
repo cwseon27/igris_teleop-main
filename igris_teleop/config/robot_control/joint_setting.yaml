@@ -1,0 +1,439 @@
+kp:
+- 960.0
+- 288.0
+- 480.0
+
+- 500.0
+- 200.0
+- 50.0
+- 500.0
+- 300.0
+- 300.0
+
+- 500.0
+- 200.0
+- 50.0
+- 500.0
+- 300.0
+- 300.0
+
+- 50.0
+- 50.0
+- 30.0
+- 30.0
+- 5.0
+- 5.0
+- 5.0
+
+- 50.0
+- 50.0
+- 30.0
+- 30.0
+- 5.0
+- 5.0
+- 5.0
+
+- 2.0
+- 5.0
+kd:
+- 2.0
+- 0.8
+- 1.15
+
+- 3.0
+- 0.5
+- 0.5
+- 3.0
+- 1.5
+- 1.5
+
+- 3.0
+- 0.5
+- 0.5
+- 3.0
+- 1.5
+- 1.5
+
+- 0.5
+- 0.5
+- 0.15
+- 0.15
+- 0.1
+- 0.1
+- 0.1
+
+- 0.5
+- 0.5
+- 0.15
+- 0.15
+- 0.1
+- 0.1
+- 0.1
+
+- 0.05
+- 0.1
+default_dof_pos:
+- 0
+- 0
+- 0
+
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+
+- -0.17098
+- 0.38123
+- 0.33176
+- -1.19044
+- 0.25468
+- -0.42747
+- -0.09709
+
+- -0.17098
+- -0.38123
+- -0.33176
+- -1.19044
+- -0.25468
+- 0.42747
+- -0.09709
+
+- 0.0
+- 0.0
+waypoint_1:
+- 0
+- 0
+- 0
+
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+
+- 0.0
+- 0.3
+- 1.57
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+
+- 0.0
+- -0.3
+- -1.57
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+
+- 0.0
+- 0.0
+waypoint_2:
+- 0
+- 0
+- 0
+
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+
+- 0
+- 0
+- 0
+- 0
+- 0
+- 0
+
+- 0.0
+- 0.3
+- 1.57
+- -2.0
+- 0.0
+- 0.0
+- 0.0
+
+- 0.0
+- -0.3
+- -1.57
+- -2.0
+- 0.0
+- 0.0
+- 0.0
+
+- 0.0
+- 0.0
+
+robros_end_pos:
+- 0.0
+- 0.0
+- 0.34
+
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+
+- 0.5
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+
+- 0.5
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+- 0.0
+
+- 0.0
+- 0.0
+
+joint_order:
+- waist_yaw
+- waist_roll
+- waist_pitch
+
+- l_hip_pitch
+- l_hip_roll
+- l_hip_yaw
+- l_knee_pitch
+- l_ankle_pitch
+- l_ankle_roll
+
+- r_hip_pitch
+- r_hip_roll
+- r_hip_yaw
+- r_knee_pitch
+- r_ankle_pitch
+- r_ankle_roll
+
+- l_shoulder_pitch
+- l_shoulder_roll
+- l_shoulder_yaw
+- l_elbow_pitch
+- l_wrist_yaw
+- l_wrist_roll
+- l_wrist_pitch
+
+- r_shoulder_pitch
+- r_shoulder_roll
+- r_shoulder_yaw
+- r_elbow_pitch
+- r_wrist_yaw
+- r_wrist_roll
+- r_wrist_pitch
+
+- neck_yaw
+- neck_pitch
+joint_groups:
+  waist:
+    range:
+    - 0
+    - 2
+    joints:
+    - waist_yaw
+    - waist_roll
+    - waist_pitch
+  l_leg:
+    range:
+    - 3
+    - 8
+    joints:
+    - l_hip_pitch
+    - l_hip_roll
+    - l_hip_yaw
+    - l_knee_pitch
+    - l_ankle_pitch
+    - l_ankle_roll
+  r_leg:
+    range:
+    - 9
+    - 14
+    joints:
+    - r_hip_pitch
+    - r_hip_roll
+    - r_hip_yaw
+    - r_knee_pitch
+    - r_ankle_pitch
+    - r_ankle_roll
+  leg:
+    range:
+    - 3
+    - 14
+    joints:
+    - l_hip_pitch
+    - l_hip_roll
+    - l_hip_yaw
+    - l_knee_pitch
+    - l_ankle_pitch
+    - l_ankle_roll
+    - r_hip_pitch
+    - r_hip_roll
+    - r_hip_yaw
+    - r_knee_pitch
+    - r_ankle_pitch
+    - r_ankle_roll
+  l_shoulder:
+    range:
+    - 15
+    - 17
+    joints:
+    - l_shoulder_pitch
+    - l_shoulder_roll
+    - l_shoulder_yaw
+  l_elbow:
+    range:
+    - 18
+    - 18
+    joints:
+    - l_elbow_pitch
+  l_wrist:
+    range:
+    - 19
+    - 21
+    joints:
+    - l_wrist_yaw
+    - l_wrist_roll
+    - l_wrist_pitch
+  l_arm:
+    range:
+    - 15
+    - 21
+    joints:
+    - l_shoulder_pitch
+    - l_shoulder_roll
+    - l_shoulder_yaw
+    - l_elbow_pitch
+    - l_wrist_yaw
+    - l_wrist_roll
+    - l_wrist_pitch
+  r_shoulder:
+    range:
+    - 22
+    - 24
+    joints:
+    - r_shoulder_pitch
+    - r_shoulder_roll
+    - r_shoulder_yaw
+  r_elbow:
+    range:
+    - 25
+    - 25
+    joints:
+    - r_elbow_pitch
+  r_wrist:
+    range:
+    - 26
+    - 28
+    joints:
+    - r_wrist_yaw
+    - r_wrist_roll
+    - r_wrist_pitch
+  r_arm:
+    range:
+    - 22
+    - 28
+    joints:
+    - r_shoulder_pitch
+    - r_shoulder_roll
+    - r_shoulder_yaw
+    - r_elbow_pitch
+    - r_wrist_yaw
+    - r_wrist_roll
+    - r_wrist_pitch
+  arm:
+    range:
+    - 15
+    - 28
+    joints:
+    - l_shoulder_pitch
+    - l_shoulder_roll
+    - l_shoulder_yaw
+    - l_elbow_pitch
+    - l_wrist_yaw
+    - l_wrist_roll
+    - l_wrist_pitch
+    - r_shoulder_pitch
+    - r_shoulder_roll
+    - r_shoulder_yaw
+    - r_elbow_pitch
+    - r_wrist_yaw
+    - r_wrist_roll
+    - r_wrist_pitch
+  neck:
+    range:
+    - 29
+    - 30
+    joints:
+    - neck_yaw
+    - neck_pitch
+  all:
+    range:
+    - 0
+    - 30
+    joints:
+    - waist_yaw
+    - waist_roll
+    - waist_pitch
+    - l_hip_pitch
+    - l_hip_roll
+    - l_hip_yaw
+    - l_knee_pitch
+    - l_ankle_pitch
+    - l_ankle_roll
+    - r_hip_pitch
+    - r_hip_roll
+    - r_hip_yaw
+    - r_knee_pitch
+    - r_ankle_pitch
+    - r_ankle_roll
+    - l_shoulder_pitch
+    - l_shoulder_roll
+    - l_shoulder_yaw
+    - l_elbow_pitch
+    - l_wrist_yaw
+    - l_wrist_roll
+    - l_wrist_pitch
+    - r_shoulder_pitch
+    - r_shoulder_roll
+    - r_shoulder_yaw
+    - r_elbow_pitch
+    - r_wrist_yaw
+    - r_wrist_roll
+    - r_wrist_pitch
+    - neck_yaw
+    - neck_pitch

@@ -1,0 +1,31 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from igris_c_sdk/msg/RobotState.msg
+// generated code does not contain a copyright notice
+
+#include "igris_c_sdk/msg/Header.idl"
+
+module igris_c_sdk {
+  module msg {
+    module RobotState_Constants {
+      const uint8 ROBOT_STATE_NOT_READY = 0;
+      const uint8 ROBOT_STATE_IDLE = 1;
+      const uint8 ROBOT_STATE_STOP = 2;
+      const uint8 ROBOT_STATE_LOW = 3;
+      const uint8 ROBOT_STATE_HIGH_MOTION_ACTIVE = 4;
+      const uint8 ROBOT_STATE_HIGH_MOTION_STANDBY = 5;
+      const uint8 ROBOT_STATE_WALK_LOW = 6;
+      const uint8 ROBOT_STATE_WALK_HIGH_MOTION_ACTIVE = 7;
+      const uint8 ROBOT_STATE_WALK_HIGH_MOTION_STANDBY = 8;
+      const uint8 ROBOT_STATE_WHOLE_BODY_CONTROL = 9;
+      const uint8 ROBOT_ENV_REAL = 0;
+      const uint8 ROBOT_ENV_SIM = 1;
+    };
+    struct RobotState {
+      igris_c_sdk::msg::Header header;
+
+      uint8 state;
+
+      uint8 environment;
+    };
+  };
+};

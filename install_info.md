@@ -20,6 +20,7 @@ SDK는 보존하고, Python 환경과 ROS 빌드 결과는 새 PC에서 다시 �
 | 카메라 코드의 보정 맵 사본과 16:9 백업 | `igris_teleop/teleop_devices/cameras/` 및 위 `config/`의 `*.npz` |
 | 손 retargeting URDF·mesh·설정 | `igris_teleop/hand_control/hand_urdf/`, `igris_teleop/hand_control/unity_baseline/` |
 | 몸체 URDF·mesh·IK·관절 보정 | `igris_teleop/robot_control/asset/`, `igris_teleop/config/`, `igris_teleop/sim/robot/` |
+| **실물 MS 시작용 PR2AB 보정본** | **`igris_artifacts/logs/robot_control/pr2ab_calibration.yaml`** — 5개 pair의 변환과 `ab_limits` 포함, Git 추적 필수 |
 | Python/C++ 공개 SDK 배포물 | `ros_ws/src/igris_c_ros_bridge/thirdparty/igris_c_sdk_public/`의 `dist/`, `include/`, `lib/`, `thirdparty/` |
 | 현재 로봇 hand 메시지와 맞는 SDK snapshot | `local_state/robot_hand_sdk/include/igris_sdk/igris_c_msgs.hpp`, `local_state/robot_hand_sdk/lib/libigris_sdk.a` |
 | Walking policy | `igris_artifacts/walking/policy_1.pt`, `igris_artifacts/walking/v2/model_0030000.onnx` |
@@ -38,6 +39,13 @@ IGRIS SDK에는 x86_64 / CPython 3.12 바이너리가 포함되어 있습니다.
 이 저장소만으로 복원되지 않습니다. 해당 기능을 사용했다면 별도로 확보하세요.
 SSH 키·비밀번호·토큰은 Git에 넣지 않습니다.
 
+PR2AB 운용본은 경로에 `logs`가 있어도 재생성 가능한 로그가 아닙니다. 현재 제어
+worker는 위 경로를 명시적으로 읽습니다. 동명의
+`igris_teleop/config/robot_control/pr2ab_calibration.yaml`에는 `ab_limits`가 없어
+단순 복사로 대체할 수 없습니다. 이식 시 운용본을 보존하며, 다른 로봇/기구 구성에는
+보정의 호환성을 별도로 확인해야 합니다. 안전 검사 제거, 임의 범위 확대, PJS 모드로
+강제 전환하는 방식으로 파일 누락을 우회하지 마세요.
+
 ## 2. 원본 PC 백업과 새 PC 체크아웃
 
 프레임워크를 정상 종료한 후 같은 Git commit을 새 PC에 내려받습니다.
@@ -49,9 +57,10 @@ git rev-parse HEAD
 export IGRIS_ROOT="$(pwd -P)"
 ```
 
-이 private 저장소에 접근 권한이 있는 GitHub 계정으로 인증해야 합니다. Git에는 commit한
+저장소가 Private이면 접근 권한이 있는 GitHub 계정으로 인증해야 합니다. Git에는 commit한
 파일만 포함되므로 원본 PC에서 `git status --short`도 확인하세요. `.venv*`, ROS
-`build/install/log`, 캐시, 로그, 녹화물은 Git으로 복원하지 않습니다. 향후 Git LFS를
+`build/install/log`, 캐시, 일반 실행 로그, 녹화물은 Git으로 복원하지 않습니다.
+예외적으로 실물 PR2AB 운용 보정본은 Git에 포함합니다. 향후 Git LFS를
 도입한다면 `git lfs pull`까지 실행하여 pointer가 아닌 실제 자산을 확보합니다.
 
 현재 카메라/개인 LAN 설정은 별도 비공개 백업으로 옮깁니다. 원본 PC의 프로젝트
@@ -64,6 +73,7 @@ for item in igris_artifacts/config/hybrid_teleop.json \
   local_state/cyclonedds_igris_lan.xml \
   local_state/controller_to_chest_calibration.env \
   local_state/controller_to_chest_calibration.json \
+  igris_artifacts/logs/robot_control/pr2ab_calibration.yaml \
   igris_teleop_desktop_options.env; do
   if [ -f "$item" ]; then IGRIS_SETTINGS_FILES+=("$item"); fi
 done
@@ -89,7 +99,34 @@ test -f local_state/robot_hand_sdk/include/igris_sdk/igris_c_msgs.hpp
 test -f local_state/robot_hand_sdk/lib/libigris_sdk.a
 (cd local_state/robot_hand_sdk && sha256sum -c SHA256SUMS)
 test -f ros_ws/src/stereo_sbs_cam_pub/config/stereo_rectify_maps_tuned.npz
+test -f igris_artifacts/logs/robot_control/pr2ab_calibration.yaml
 ```
+
+### 기존 clone의 PR2AB 누락 오류 복구
+
+최초 배포 commit `aefe8dc`에는 실물에서 읽는 PR2AB 운용본이 빠져 있었습니다.
+이후 수정은 원래 PC의 정상 운용본(값과 경로 동일)을 배포에 포함합니다. 실패 원인이
+controller에 저장되므로 파일만 내려받고 실행 중인 프로세스를 그대로 두면 안 됩니다.
+
+프레임워크를 정상 종료한 후, **갱신할 프로젝트 루트**에서 실행합니다. 다른 도구가
+이미 같은 경로에 파일을 만들었다면 먼저 백업하고, 그 PC에 맞춰 별도로 보정한
+파일이면 배포본으로 덮기 전에 비교하세요.
+
+```bash
+IGRIS_PR2AB="igris_artifacts/logs/robot_control/pr2ab_calibration.yaml"
+if [ -f "$IGRIS_PR2AB" ]; then
+  IGRIS_CALIB_BACKUP="$(mktemp -d /tmp/igris-pr2ab-backup.XXXXXX)"
+  cp -p "$IGRIS_PR2AB" "$IGRIS_CALIB_BACKUP/pr2ab_calibration.yaml"
+  printf '기존 보정 백업: %s\n' "$IGRIS_CALIB_BACKUP"
+fi
+git pull --ff-only
+sha256sum -c docs/runtime_assets.sha256
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests/test_pr2ab_deployment.py
+```
+
+이 테스트는 로봇에 접속하지 않고 배포 파일·5개 pair·모터 범위와 시작 안전 검사를
+확인합니다. 검사 후 기존 launcher로 프레임워크를 완전히 재시작하세요. 이번 보정
+배포 수정 자체는 venv 재설치나 ROS 재빌드가 필요하지 않습니다.
 
 ## 3. 새 PC 시스템 준비
 
@@ -330,6 +367,7 @@ env -u PYTHONPATH .venv/bin/python -c 'import igris_c_sdk; assert hasattr(igris_
 
 ```bash
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests/test_pr2ab_deployment.py
 PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv-mediapipe/bin/python -m pytest -q \
   ros_ws/src/mediapipe_hand_pose_bridge/test \
   ros_ws/src/openxr_hand_to_igris_viewer/test
@@ -416,6 +454,7 @@ topic 이름만 보이고 영상 sample이 없다면 camera bridge 설치,
 
 - [ ] 같은 commit의 source·lock·정책·URDF/mesh·보정 map 확보 및 checksum 확인
 - [ ] 공개 SDK 배포물 + robot-matched hand SDK snapshot 확보
+- [ ] 실제 MS 경로의 PR2AB 운용본 및 5개 pair의 `ab_limits` 검사 (일반 로그와 함께 제외하지 않기)
 - [ ] 필요한 개인 설정·checkpoint·Unity 클라이언트 별도 백업/복원
 - [ ] Python 환경 5개를 새 PC에서 생성
 - [ ] Reliability 핵심 3개와 PC용 body/hand/image/leader ROS package 빌드
@@ -443,3 +482,12 @@ topic 이름만 보이고 영상 sample이 없다면 camera bridge 설치,
 
 이는 소스·자산 보존과 새 경로 빌드 확인이며, 별도 PC의 GPU/USB/네트워크와 실제
 로봇 동작까지 검증했다는 의미는 아닙니다. 이식 후 위 체크리스트를 다시 수행하세요.
+
+### PR2AB 배포 누락 정정 (2026-09-12)
+
+위 최초 배포 검증은 실물 MS 시작에 필요한 로그 경로의 PR2AB 운용본 누락을 잡지
+못했습니다. 정상 운용본을 값·경로 변경 없이 Git에 추가하고 자산 manifest를 19개로
+확장했습니다. 새 소스 체크아웃에서 보정 파일과 5개 pair의 `ab_limits`를 검사하는
+비구동 테스트 10개가 통과했고, 루트 회귀 테스트는 251개 통과·8개 skip입니다.
+실제 로봇의 state/토크/운동 검증은 수행하지 않았으며 제어 수식과 안전 검사는
+변경하지 않았습니다.

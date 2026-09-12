@@ -171,11 +171,22 @@ MuJoCo에서는 Camera 시작 시 head stereo가 GUI와 동일 좌우 ROS topic�
 
 ```bash
 # 기본 회귀 테스트: 모터 명령을 보내는 실물 실행 명령이 아님
-.venv/bin/python -m pytest -q tests
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests
 
 # 모델 파일 무결성
 (cd policy_archive && sha256sum -c SHA256SUMS)
+
+# 실물 PR2AB 보정본을 포함한 배포 자산 및 비구동 시작 검사
+sha256sum -c docs/runtime_assets.sha256
+PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 .venv/bin/python -m pytest -q tests/test_pr2ab_deployment.py
 ```
+
+실물 MS 모드는 `igris_artifacts/logs/robot_control/pr2ab_calibration.yaml`을 사용합니다.
+경로에 `logs`가 있어도 필수 설정이므로 Git에서 제외하거나 로그 정리 시 삭제하면
+안 됩니다. 동명의 `igris_teleop/config/robot_control/` 파일은 모터 범위 정보가 없는
+이전 보정본으로 대체할 수 없습니다. 최초 배포본에서 이 파일이 누락된 문제는
+보정본을 원래 경로 그대로 포함해 수정했습니다. 기존 clone은 [설치 가이드의 복구 절차](./install_info.md)를
+따라 갱신한 뒤 프레임워크를 완전히 재시작하세요.
 
 선택 의존성이 없는 환경에서는 일부 테스트가 skip됩니다. Retargeting/IK/ML/MediaPipe 테스트는 해당 전용 환경에서도 실행해야 합니다. [tests 안내](./tests/README.md)를 참고하세요.
 

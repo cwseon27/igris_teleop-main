@@ -64,6 +64,13 @@ igris_artifacts/
 !igris_artifacts/
 igris_artifacts/*
 !igris_artifacts/README.md
+# This calibration is required at startup in real/MS mode, not a disposable log.
+# Preserve the established runtime path; keep every other log excluded.
+!igris_artifacts/logs/
+igris_artifacts/logs/*
+!igris_artifacts/logs/robot_control/
+igris_artifacts/logs/robot_control/*
+!igris_artifacts/logs/robot_control/pr2ab_calibration.yaml
 !igris_artifacts/walking/
 igris_artifacts/walking/*
 !igris_artifacts/walking/policy_1.pt

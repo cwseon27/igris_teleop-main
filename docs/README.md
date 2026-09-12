@@ -5,7 +5,8 @@
 ## 현재 문서
 
 - `camera_dds_setting.txt`: camera DDS 설정과 확인 절차 메모입니다.
-- `runtime_assets.sha256`: 배포에 필요한 모델·보정 맵·SDK 바이너리 18개의 SHA-256입니다.
+- `runtime_assets.sha256`: 모델·보정 맵·SDK 바이너리 18개와 실물 PR2AB 보정본을 포함한
+  필수 자산 19개의 SHA-256입니다.
   저장소 루트에서 `sha256sum -c docs/runtime_assets.sha256`로 누락·손상을 검사합니다.
 - `examples/cyclonedds_igris_lan.xml`: 새 PC용 LAN 설정 예시입니다. 실제 PC의 주소로
   편집한 뒤 사용해야 하며 자동 적용되지 않습니다.
